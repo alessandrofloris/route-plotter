@@ -1,23 +1,6 @@
-.container {
-  position: relative;
-  height: 30em;
+.routes-info-container {
+  box-sizing: border-box;
+  padding: 1em;
   width: 100%;
-}
-
-.map-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: 30px;
-}
-
-.map-frame {
-  border: 2px solid black;
-  height: 100%;
-}
-
-#map {
   height: 100%;
 }

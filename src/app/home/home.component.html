@@ -1,13 +1,15 @@
-<div>
-  <h2>Inserisci file</h2>
+<div class="file-upload-container">
+
+  <h2>Inserisci un file che contiene la soluzione di un VRP</h2>
 
   <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
 
   <div class="file-upload">
-    {{fileName || "Nessun file caricato."}}
     <button class="upload-btn" (click)="fileUpload.click()">
       <mat-icon>attach_file</mat-icon>
     </button>
+    <p>{{fileName || "Nessun file caricato."}}</p>
   </div>
+
 </div>
 
