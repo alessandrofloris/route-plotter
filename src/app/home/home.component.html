@@ -4,7 +4,7 @@
   <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
 
   <div class="file-upload">
-    {{fileName || "No file uploaded yet."}}
+    {{fileName || "Nessun file caricato."}}
     <button class="upload-btn" (click)="fileUpload.click()">
       <mat-icon>attach_file</mat-icon>
     </button>

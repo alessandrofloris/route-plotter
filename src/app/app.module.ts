@@ -26,7 +26,7 @@ import { MapComponent } from './map/map.component';
     MatIconModule,
     NoopAnimationsModule,
     HttpClientModule,
-    LeafletModule
+    LeafletModule,
   ],
   providers: [DataService, ApiService],
   bootstrap: [AppComponent]

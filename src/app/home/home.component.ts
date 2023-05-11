@@ -21,8 +21,7 @@ export class HomeComponent implements OnInit {
   processInput(data:any) {
 
     if(typeof data === "string") {
-      let lines:string[] = data.split("\n")
-
+      let lines:string[] = data.split("\n").filter(s => s)
       lines.forEach( line_raw => {
         let line:string[] = line_raw.split(",")
         let lat:number = Number(line[0])

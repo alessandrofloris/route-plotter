@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {DataService} from "../services/data.service";
 import {Coordinates} from "../types";
 import {ApiService} from "../services/api.service";
@@ -11,9 +11,8 @@ import * as Leaflet from "leaflet"
 })
 export class PlotComponent implements OnInit {
 
-  // map:any
   route:Coordinates[]
-  polyline:string
+  routeToDraw:object
   messaggio:string
   constructor(private dataService:DataService,
               private api:ApiService) {
@@ -25,28 +24,14 @@ export class PlotComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  // ngAfterViewInit(): void {
-  //   this.initMap();
-  // }
-
-  // private initMap(): void {
-  //   this.map = Leaflet.map('map', {
-  //     center: [ 39.8282, -98.5795 ],
-  //     zoom: 3
-  //   });
-  // }
-
-  drawMap() {
-
-  }
   extractData(data:any) {
-    this.polyline = data.routes[0].geometry
-    this.drawMap()
+    this.routeToDraw = data.routes[0].geometry.coordinates
   }
   updateView() {
     if(this.route.length > 0) {
       this.messaggio = "Hai una rotta!"
-      this.api.getRouteData().subscribe(data => {
+      this.api.getRouteData(this.route).subscribe(data => {
+        console.log(data)
         this.extractData(data)
       })
     }
