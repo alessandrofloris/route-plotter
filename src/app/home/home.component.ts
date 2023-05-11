@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Coordinates} from "../types";
 import { MatIconModule } from '@angular/material/icon';
+import {DataService} from "../services/data.service";
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -10,7 +11,7 @@ export class HomeComponent implements OnInit {
 
   coordinates:Coordinates[]
   fileName:string
-  constructor() {
+  constructor(private dataService:DataService) {
     this.coordinates = []
   }
 
@@ -29,6 +30,8 @@ export class HomeComponent implements OnInit {
         this.coordinates.push({lat,lon})
       })
 
+      this.dataService.updateRoute(this.coordinates)
+
     } else {
       console.log("[Error] Formato del file non corretto")
     }
@@ -40,9 +43,6 @@ export class HomeComponent implements OnInit {
 
     reader.onload = () => {
       const fileContents: string | ArrayBuffer | null = reader.result;
-
-      console.log(fileContents);
-
       this.processInput(fileContents)
     };
 
@@ -51,9 +51,7 @@ export class HomeComponent implements OnInit {
 
   onFileSelected(event : any) {
     const file: File = event.target.files[0];
-
     this.fileName = file.name;
-
     this.readFile(file)
   }
 
