@@ -94,10 +94,29 @@ export class MapComponent implements OnInit {
     this.zoom$.emit(this.zoom);
   }
 
+  getIcon(color:string) {
+
+    return new L.Icon({
+      iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
+  }
   updateRoutePoints(){
-    this.routePoints.forEach( point => {
-      let marker = new Marker([point.lat, point.lon])
-      marker.addTo(this.map)
+
+    let icon
+    let iconRed = this.getIcon('red')
+    let iconBlue = this.getIcon('blue')
+    let iconGreen = this.getIcon('green')
+
+    this.routePoints.forEach( (point,i) => {
+      if(i==0) icon = iconGreen
+      else if (i==this.routePoints.length-1) icon = iconRed
+      else icon = iconBlue
+      L.marker([point.lat, point.lon], {icon:icon}).addTo(this.map)
     })
   }
 
