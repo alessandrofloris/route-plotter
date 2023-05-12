@@ -18,6 +18,23 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onFileSelected(event : any) {
+    const file: File = event.target.files[0];
+    this.fileName = file.name;
+    this.readFile(file)
+  }
+
+  readFile(file: File) {
+    const reader: FileReader = new FileReader();
+
+    reader.onload = () => {
+      const fileContents: string | ArrayBuffer | null = reader.result;
+      this.processInput(fileContents)
+    };
+
+    reader.readAsText(file);
+  }
+
   processInput(data:any) {
 
     if(typeof data === "string") {
@@ -35,23 +52,6 @@ export class HomeComponent implements OnInit {
       console.log("[Error] Formato del file non corretto")
     }
 
-  }
-
-  readFile(file: File) {
-    const reader: FileReader = new FileReader();
-
-    reader.onload = () => {
-      const fileContents: string | ArrayBuffer | null = reader.result;
-      this.processInput(fileContents)
-    };
-
-    reader.readAsText(file);
-  }
-
-  onFileSelected(event : any) {
-    const file: File = event.target.files[0];
-    this.fileName = file.name;
-    this.readFile(file)
   }
 
 }

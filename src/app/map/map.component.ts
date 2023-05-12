@@ -11,7 +11,8 @@ import {
   tileLayer,
   latLng,
   Polyline,
-  LatLng
+  LatLng,
+  Marker
 } from 'leaflet';
 
 import {polyline_} from "@mapbox/polyline"
