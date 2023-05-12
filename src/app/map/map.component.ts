@@ -16,6 +16,8 @@ import {
 } from 'leaflet';
 
 import {polyline_} from "@mapbox/polyline"
+import {DataService} from "../services/data.service";
+import {Coordinates} from "../types";
 
 @Component({
   selector: 'app-map',
@@ -40,7 +42,13 @@ export class MapComponent implements OnInit {
   public map: Map;
   public zoom: number;
 
-  constructor() {
+  routePoints:Coordinates[]
+
+  constructor(dataService: DataService) {
+    dataService.route$.subscribe(r => {
+      this.routePoints = r
+      this.updateRoutePoints()
+    })
   }
 
   ngOnInit() {
@@ -84,6 +92,13 @@ export class MapComponent implements OnInit {
   onMapZoomEnd(e: ZoomAnimEvent) {
     this.zoom = e.target.getZoom();
     this.zoom$.emit(this.zoom);
+  }
+
+  updateRoutePoints(){
+    this.routePoints.forEach( point => {
+      let marker = new Marker([point.lat, point.lon])
+      marker.addTo(this.map)
+    })
   }
 
   protected readonly event = event;
