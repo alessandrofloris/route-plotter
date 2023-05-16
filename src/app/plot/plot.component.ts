@@ -25,17 +25,24 @@ export class PlotComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  extractData(data:any) {
-    console.log("Next()")
-    this.routesToDraw.push(data.routes[0].geometry.coordinates)
+  extractData(data:any[]) {
+    data.forEach( d => {
+      this.routesToDraw.push(d.routes[0].geometry.coordinates)
+    })
     this.routesToDraw = [...this.routesToDraw]
   }
   updateView() {
     if(this.routes.length > 0) {
       this.messaggio = "Hai delle rotte da visualizzare!"
-      this.routes.forEach( route => {
+      let counter = 0
+      let container:object[] = []
+      this.routes.forEach( (route, index, array) => {
         this.api.getRouteData(route.coordinates).subscribe(data => {
-          this.extractData(data)
+          counter++
+          container.push(data)
+          if(counter === array.length) {
+            this.extractData(container)
+          }
         })
       })
     }
