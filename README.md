@@ -19,15 +19,12 @@ Dove il carattere `*` serve come separatore tra rotte differenti.
 - Implementare gestione degli errori durante il processing del file in input
 
 ## Bug
-- Quando carico delle nuove rotte non vengono eliminate qulle precedenti dalla mappa
 
 ## Nuovi feature da implementare
-- Visualizzare multiple rotte
-- Quando ci sono multiple rotte eseguire lo zoom in modo che si vedano tutte le rotte
 - Visualizzare direzione della rotta da seguire
   - Un idea sarebbe quella di usare degli indici nei marker
     dei punti che fanno parte della rotta: D -> 1 -> 2 -> ...
-- Modificare la visualizzazione
+- Modificare l'UI
 
 ## Cose utili
 - Per implementare la visualizzazione della direzione di una rotta: 

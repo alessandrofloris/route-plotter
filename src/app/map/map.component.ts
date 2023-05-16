@@ -120,7 +120,7 @@ export class MapComponent implements OnInit {
         if(i==0) icon = iconGreen
         else if (i==route.coordinates.length-1) icon = iconRed
         else icon = iconBlue
-        let marker = L.marker([point.lat, point.lon], {icon:icon})
+        let marker = L.marker([point.lat, point.lon], {icon:icon}).bindTooltip(`<b>${i}</>`)
         marker.addTo(this.activeMarkerGroup)
       })
     })
