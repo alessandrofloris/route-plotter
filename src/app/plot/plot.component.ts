@@ -26,6 +26,7 @@ export class PlotComponent implements OnInit {
   ngOnInit(): void {}
 
   extractData(data:any[]) {
+    this.routesToDraw = []
     data.forEach( d => {
       this.routesToDraw.push(d.routes[0].geometry.coordinates)
     })

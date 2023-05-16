@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter, SimpleChange, SimpleChanges} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, SimpleChanges} from '@angular/core';
 import * as L from 'leaflet'
 import {
   Map,
@@ -6,12 +6,12 @@ import {
   MapOptions,
   tileLayer,
   latLng,
-  LatLng,
+  FeatureGroup,
+  LayerGroup,
 } from 'leaflet';
 
-import {polyline_} from "@mapbox/polyline"
 import {DataService} from "../services/data.service";
-import {Coordinates, Routes} from "../types";
+import {Routes} from "../types";
 import {MapUtils} from "../utils/map.utils";
 
 @Component({
@@ -36,7 +36,8 @@ export class MapComponent implements OnInit {
   };
   public map: Map;
   public zoom: number;
-
+  activePolylineGroup:FeatureGroup
+  activeMarkerGroup:LayerGroup
   routesPoints:Routes[]
 
   constructor(dataService: DataService) {
@@ -60,28 +61,32 @@ export class MapComponent implements OnInit {
 
   plotRoutePolyline(routePolyline) {
     let polyline = MapUtils.createPolylineFromCoordinates(routePolyline, "red")
-    polyline.addTo(this.map);
-    this.map.fitBounds(polyline.getBounds())
+    polyline.addTo(this.activePolylineGroup);
   }
   updateRoute(routes:[][]) {
-    console.log("Polyline:")
-    console.log(routes)
-    console.log(routes[0])
+    this.clearPolylines()
     routes.forEach(routePolyline => {
       this.plotRoutePolyline(routePolyline)
     })
+    this.activePolylineGroup.addTo(this.map)
+    this.map.fitBounds(this.activePolylineGroup.getBounds())
   }
 
-  clearMap() {
-    // clear markers
-    // clear polylines
+  clearMarkers() {
+    this.activeMarkerGroup.clearLayers()
+  }
+
+  clearPolylines() {
+    this.activePolylineGroup.clearLayers()
   }
 
   onMapReady(map: Map) {
-    this.map = map;
-    this.map$.emit(map);
-    this.zoom = map.getZoom();
-    this.zoom$.emit(this.zoom);
+    this.map = map
+    this.map$.emit(map)
+    this.zoom = map.getZoom()
+    this.zoom$.emit(this.zoom)
+    this.activePolylineGroup = L.featureGroup().addTo(this.map)
+    this.activeMarkerGroup = L.layerGroup().addTo(this.map)
   }
 
   onMapZoomEnd(e: ZoomAnimEvent) {
@@ -101,7 +106,7 @@ export class MapComponent implements OnInit {
     });
   }
   updateRoutePoints(){
-
+    this.clearMarkers()
     let icon
     let iconRed = this.getIcon('red')
     let iconBlue = this.getIcon('blue')
@@ -112,9 +117,11 @@ export class MapComponent implements OnInit {
         if(i==0) icon = iconGreen
         else if (i==route.coordinates.length-1) icon = iconRed
         else icon = iconBlue
-        L.marker([point.lat, point.lon], {icon:icon}).addTo(this.map)
+        let marker = L.marker([point.lat, point.lon], {icon:icon})
+        marker.addTo(this.activeMarkerGroup)
       })
     })
+    this.activeMarkerGroup.addTo(this.map)
   }
 
   protected readonly event = event;

@@ -3,10 +3,6 @@ import * as L from "leaflet";
 
 export class MapUtils {
 
-  static calcMultiRouteBound(bounds) {
-
-  }
-
   static createPolylineFromCoordinates(coordinates, color:string) {
     let pointList:LatLng[] = []
     coordinates.forEach( c => {
