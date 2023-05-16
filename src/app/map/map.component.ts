@@ -2,22 +2,17 @@ import {Component, OnInit, Input, Output, EventEmitter, SimpleChange, SimpleChan
 import * as L from 'leaflet'
 import {
   Map,
-  LeafletEvent,
-  Control,
-  DomUtil,
   ZoomAnimEvent,
-  Layer,
   MapOptions,
   tileLayer,
   latLng,
-  Polyline,
   LatLng,
-  Marker
 } from 'leaflet';
 
 import {polyline_} from "@mapbox/polyline"
 import {DataService} from "../services/data.service";
-import {Coordinates} from "../types";
+import {Coordinates, Routes} from "../types";
+import {MapUtils} from "../utils/map.utils";
 
 @Component({
   selector: 'app-map',
@@ -26,7 +21,7 @@ import {Coordinates} from "../types";
 })
 export class MapComponent implements OnInit {
 
-  @Input() route:object
+  @Input() routes:object[]
   @Output() map$: EventEmitter<Map> = new EventEmitter;
   @Output() zoom$: EventEmitter<number> = new EventEmitter;
   @Input() options: MapOptions= {
@@ -42,11 +37,11 @@ export class MapComponent implements OnInit {
   public map: Map;
   public zoom: number;
 
-  routePoints:Coordinates[]
+  routesPoints:Routes[]
 
   constructor(dataService: DataService) {
-    dataService.route$.subscribe(r => {
-      this.routePoints = r
+    dataService.routes$.subscribe(r => {
+      this.routesPoints = r
       this.updateRoutePoints()
     })
   }
@@ -60,26 +55,26 @@ export class MapComponent implements OnInit {
   };
 
   ngOnChanges(changes:SimpleChanges) {
-    this.updateRoute(changes['route'].currentValue)
+    this.updateRoute(changes['routes'].currentValue)
   }
 
-  updateRoute(route:[]) {
-    console.log(route)
-    let pointList:LatLng[] = []
-    route.forEach( c => {
-      let lon = c[0]
-      let lat = c[1]
-      let point = new LatLng(lat, lon)
-      pointList.push(point)
+  plotRoutePolyline(routePolyline) {
+    let polyline = MapUtils.createPolylineFromCoordinates(routePolyline, "red")
+    polyline.addTo(this.map);
+    this.map.fitBounds(polyline.getBounds())
+  }
+  updateRoute(routes:[][]) {
+    console.log("Polyline:")
+    console.log(routes)
+    console.log(routes[0])
+    routes.forEach(routePolyline => {
+      this.plotRoutePolyline(routePolyline)
     })
-    let firstpolyline = new L.Polyline(pointList, {
-      color: 'red',
-      weight: 5,
-      opacity: 0.5,
-      smoothFactor: 1
-    });
-    firstpolyline.addTo(this.map);
-    this.map.fitBounds(firstpolyline.getBounds())
+  }
+
+  clearMap() {
+    // clear markers
+    // clear polylines
   }
 
   onMapReady(map: Map) {
@@ -112,11 +107,13 @@ export class MapComponent implements OnInit {
     let iconBlue = this.getIcon('blue')
     let iconGreen = this.getIcon('green')
 
-    this.routePoints.forEach( (point,i) => {
-      if(i==0) icon = iconGreen
-      else if (i==this.routePoints.length-1) icon = iconRed
-      else icon = iconBlue
-      L.marker([point.lat, point.lon], {icon:icon}).addTo(this.map)
+    this.routesPoints.forEach( route => {
+      route.coordinates.forEach( (point,i) => {
+        if(i==0) icon = iconGreen
+        else if (i==route.coordinates.length-1) icon = iconRed
+        else icon = iconBlue
+        L.marker([point.lat, point.lon], {icon:icon}).addTo(this.map)
+      })
     })
   }
 

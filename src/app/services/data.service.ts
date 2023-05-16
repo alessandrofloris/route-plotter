@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Coordinates} from "../types";
+import {Coordinates, Routes} from "../types";
 import {Observable, Subject} from "rxjs";
 
 @Injectable({
@@ -7,16 +7,14 @@ import {Observable, Subject} from "rxjs";
 })
 export class DataService {
 
-  route = new Subject<Coordinates[]>()
-  route$ = this.route.asObservable()
+  routes = new Subject<Routes[]>()
+  routes$ = this.routes.asObservable()
 
   constructor() {
-    this.route.next([])
   }
 
-  updateRoute(route:Coordinates[]) {
-    this.route.next(route)
+  updateRoutes(routes:Routes[]) {
+    this.routes.next(routes)
   }
-
 
 }

@@ -17,6 +17,7 @@ export class ApiService {
   }
 
   private createRouteString(route) {
+    this.routeString = ""
     route.forEach( r => {
       let lat = String(r.lat)
       let lon = String(r.lon)
@@ -24,12 +25,10 @@ export class ApiService {
       this.routeString = this.routeString + pointString
     })
     this.routeString = this.routeString.slice(0,this.routeString.length-1)
-    console.log(this.routeString)
   }
   getRouteData(route:Coordinates[]) {
     this.createRouteString(route)
     let url = this.routeServiceUrlPrefix + this.routeString + this.routeServiceUrlSuffix
-    console.log(url)
     return this.http.get(url)
   }
 }

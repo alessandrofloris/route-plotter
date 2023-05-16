@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {DataService} from "../services/data.service";
-import {Coordinates} from "../types";
+import {Coordinates, Routes} from "../types";
 import {ApiService} from "../services/api.service";
 import * as Leaflet from "leaflet"
 
@@ -11,13 +11,14 @@ import * as Leaflet from "leaflet"
 })
 export class PlotComponent implements OnInit {
 
-  route:Coordinates[]
-  routeToDraw:object
+  routes:Routes[]
+  routesToDraw:object[]
   messaggio:string
   constructor(private dataService:DataService,
               private api:ApiService) {
-    dataService.route$.subscribe(r => {
-      this.route = r
+    this.routesToDraw = []
+    dataService.routes$.subscribe(r => {
+      this.routes = r
       this.updateView()
     })
   }
@@ -25,14 +26,17 @@ export class PlotComponent implements OnInit {
   ngOnInit(): void {}
 
   extractData(data:any) {
-    this.routeToDraw = data.routes[0].geometry.coordinates
+    console.log("Next()")
+    this.routesToDraw.push(data.routes[0].geometry.coordinates)
+    this.routesToDraw = [...this.routesToDraw]
   }
   updateView() {
-    if(this.route.length > 0) {
-      this.messaggio = "Hai una rotta!"
-      this.api.getRouteData(this.route).subscribe(data => {
-        console.log(data)
-        this.extractData(data)
+    if(this.routes.length > 0) {
+      this.messaggio = "Hai delle rotte da visualizzare!"
+      this.routes.forEach( route => {
+        this.api.getRouteData(route.coordinates).subscribe(data => {
+          this.extractData(data)
+        })
       })
     }
   }
