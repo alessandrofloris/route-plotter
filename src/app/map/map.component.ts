@@ -45,6 +45,8 @@ export class MapComponent implements OnInit {
       this.routesPoints = r
       this.updateRoutePoints()
     })
+    this.activePolylineGroup = L.featureGroup()
+    this.activeMarkerGroup = L.layerGroup()
   }
 
   ngOnInit() {
@@ -56,7 +58,8 @@ export class MapComponent implements OnInit {
   };
 
   ngOnChanges(changes:SimpleChanges) {
-    this.updateRoute(changes['routes'].currentValue)
+    if(changes['routes'].currentValue.length > 0)
+      this.updateRoute(changes['routes'].currentValue)
   }
 
   plotRoutePolyline(routePolyline) {
@@ -73,11 +76,11 @@ export class MapComponent implements OnInit {
   }
 
   clearMarkers() {
-    this.activeMarkerGroup.clearLayers()
+    if(this.activeMarkerGroup) this.activeMarkerGroup.clearLayers()
   }
 
   clearPolylines() {
-    this.activePolylineGroup.clearLayers()
+    if(this.activePolylineGroup) this.activePolylineGroup.clearLayers()
   }
 
   onMapReady(map: Map) {
@@ -85,13 +88,13 @@ export class MapComponent implements OnInit {
     this.map$.emit(map)
     this.zoom = map.getZoom()
     this.zoom$.emit(this.zoom)
-    this.activePolylineGroup = L.featureGroup().addTo(this.map)
-    this.activeMarkerGroup = L.layerGroup().addTo(this.map)
+    this.activePolylineGroup.addTo(this.map)
+    this.activeMarkerGroup.addTo(this.map)
   }
 
   onMapZoomEnd(e: ZoomAnimEvent) {
-    this.zoom = e.target.getZoom();
-    this.zoom$.emit(this.zoom);
+    this.zoom = e.target.getZoom()
+    this.zoom$.emit(this.zoom)
   }
 
   getIcon(color:string) {
