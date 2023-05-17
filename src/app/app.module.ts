@@ -12,13 +12,15 @@ import { PlotComponent } from './plot/plot.component';
 import {DataService} from "./services/data.service";
 import {ApiService} from "./services/api.service";
 import { MapComponent } from './map/map.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     PlotComponent,
-    MapComponent
+    MapComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
