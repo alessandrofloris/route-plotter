@@ -37,7 +37,7 @@
   float: left;
   font-size: 130%;
   color: #553c9a;
-
+  text-decoration: none;
   @media (max-width:480px)  {
     font-size: 100%;
   }
@@ -45,4 +45,7 @@
 
 .nav-link:last-child {
   margin-right: 2em;
+  @media (max-width:480px)  {
+    margin-right: 0;
+  }
 }

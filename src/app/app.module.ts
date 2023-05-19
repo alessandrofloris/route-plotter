@@ -13,6 +13,9 @@ import {DataService} from "./services/data.service";
 import {ApiService} from "./services/api.service";
 import { MapComponent } from './map/map.component';
 import { HeaderComponent } from './header/header.component';
+import { UploadComponent } from './upload/upload.component';
+import { MultiRoutesViewComponent } from './multi-routes-view/multi-routes-view.component';
+import { SingleRouteViewComponent } from './single-route-view/single-route-view.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,10 @@ import { HeaderComponent } from './header/header.component';
     HomeComponent,
     PlotComponent,
     MapComponent,
-    HeaderComponent
+    HeaderComponent,
+    UploadComponent,
+    MultiRoutesViewComponent,
+    SingleRouteViewComponent
   ],
   imports: [
     BrowserModule,
@@ -29,6 +35,7 @@ import { HeaderComponent } from './header/header.component';
     NoopAnimationsModule,
     HttpClientModule,
     LeafletModule,
+    AppRoutingModule
   ],
   providers: [DataService, ApiService],
   bootstrap: [AppComponent]

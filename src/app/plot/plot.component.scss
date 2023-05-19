@@ -1,6 +1,17 @@
-.routes-info-container {
-  box-sizing: border-box;
-  padding: 1em;
-  width: 100%;
+.plot-container {
+  display: flex;
+  flex-direction: row;
+
   height: 100%;
+
+  box-sizing: border-box;
+  padding-top: 3em;
+}
+
+.sidebar-container {
+  flex: 30%;
+}
+
+.map-container {
+  flex: 70%;
 }
