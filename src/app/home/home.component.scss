@@ -1,0 +1,41 @@
+.file-upload-container {
+  margin-top: 3em;
+  box-sizing: border-box;
+  padding: 1em;
+  h2 {
+    margin: 0;
+  }
+
+  @media (max-width:480px)  {
+   margin-top: 1em;
+  }
+}
+
+.file-input {
+  display: none;
+}
+
+.file-upload {
+  height: 4em;
+  width: 20em;
+  margin-top: 1em;
+
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.upload-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 1em;
+  background: #343a40;
+  color: #fff;
+  border-radius: 10px;
+  margin-right: 1em;;
+}
+
+.upload-btn:hover {
+  background: #6c757d;
+}

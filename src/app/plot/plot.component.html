@@ -1,11 +1,5 @@
-<div class="plot-container">
+<div class="routes-info-container">
 
-  <div class="sidebar-container">
-    <router-outlet></router-outlet>
-  </div>
-
-  <div class="map-container">
-    <app-map></app-map>
-  </div>
+  <app-map [routes]="routesToDraw"></app-map>
 
 </div>

@@ -1,13 +1,8 @@
-/**
- * Questo componente prende le varie rotte salvate che
- * le vengono fornite dal servizio DataService ed utilizza
- * il servizio ApiService per ottenere (per ogni rotta) il percorso effettivo
- * da seguire per effettuare tale rotta.
- * */
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {DataService} from "../services/data.service";
-import {Routes} from "../types";
+import {Coordinates, Routes} from "../types";
 import {ApiService} from "../services/api.service";
+import * as Leaflet from "leaflet"
 
 @Component({
   selector: 'app-plot',
@@ -35,8 +30,7 @@ export class PlotComponent implements OnInit {
     data.forEach( d => {
       this.routesToDraw.push(d.routes[0].geometry.coordinates)
     })
-    this.dataService.updateRoutesToDraw(this.routesToDraw)
-    // this.routesToDraw = [...this.routesToDraw]
+    this.routesToDraw = [...this.routesToDraw]
   }
   updateView() {
     if(this.routes.length > 0) {
