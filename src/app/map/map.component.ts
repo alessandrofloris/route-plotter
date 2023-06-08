@@ -63,9 +63,10 @@ export class MapComponent implements OnInit {
   }
 
   plotRoutePolyline(routePolyline) {
-    let polyline = MapUtils.createPolylineFromCoordinates(routePolyline, "red")
+    let polyline = MapUtils.createPolylineFromCoordinates(routePolyline, "transparent")
     polyline.addTo(this.activePolylineGroup);
   }
+  
   updateRoute(routes:[][]) {
     this.clearPolylines()
     routes.forEach(routePolyline => {
@@ -115,12 +116,12 @@ export class MapComponent implements OnInit {
     let iconBlue = this.getIcon('blue')
     let iconGreen = this.getIcon('green')
 
-    this.routesPoints.forEach( route => {
+    let icons = [iconRed, iconBlue, iconGreen]
+
+    this.routesPoints.forEach( (route, route_index) => {
+      icon = icons[route_index]
       route.coordinates.forEach( (point,i) => {
-        if(i==0) icon = iconGreen
-        else if (i==route.coordinates.length-1) icon = iconRed
-        else icon = iconBlue
-        let marker = L.marker([point.lat, point.lon], {icon:icon}).bindTooltip(`<b>${i}</>`)
+        let marker = L.marker([point.lat, point.lon], {icon:icon})
         marker.addTo(this.activeMarkerGroup)
       })
     })
